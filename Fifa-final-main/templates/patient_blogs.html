@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patient Blogs</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;
+        }
+
+        h3 {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+
+        .blog-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .blog-card img {
+            width: 160px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .blog-content {
+            flex: 1;
+        }
+
+        .blog-title {
+            margin: 0;
+            color: #34495e;
+            font-size: 18px;
+        }
+
+        .blog-summary {
+            margin-top: 10px;
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .blog-card {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .blog-card img {
+                width: 100%;
+                height: auto;
+            }
+
+            .blog-content {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>Health Blog Portal</h1>
+        <div>
+            <a href="{{ url_for('dashboard') }}">Profile</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="container">
+        <h2>Blog Posts</h2>
+        {% for category, blogs in categorized_blogs.items() %}
+            <h3>{{ category }}</h3>
+            {% for blog in blogs %}
+                <div class="blog-card">
+                    {% if blog[3] %}
+                        <img src="{{ url_for('static', filename='uploads/' + blog[3]) }}" alt="Blog Image">
+                    {% endif %}
+                    <div class="blog-content">
+                        <h4 class="blog-title">{{ blog[2] }}</h4>
+                        <p class="blog-summary">
+                            {% set words = blog[5].split() %}
+                            {% if words|length > 25 %}
+                                {{ words[:25]|join(' ') }}...
+                            {% else %}
+                                {{ blog[5] }}
+                            {% endif %}
+                        </p>
+                        <p class="blog-content">
+                            {{ blog[6] }}
+                        </p>
+                    </div>>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+</body>
+</html>

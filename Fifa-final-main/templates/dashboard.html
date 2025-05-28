@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+ 
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    .navbar {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 15px;
+      font-weight: bold;
+    }
+
+    .dashboard-container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .dashboard-container img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .dashboard-container p {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    .btn-container {
+      margin: 30px 0;
+      display: flex;
+      gap: 20px;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      background-color: #28a745;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #218838;
+    }
+
+    .btn.view {
+      background-color: #17a2b8;
+    }
+
+    .btn.view:hover {
+      background-color: #138496;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <h1>{{ user[1] }} Dashboard</h1>
+    <div>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </div>
+
+  <!-- Dashboard Info -->
+  <div class="dashboard-container">
+    <img src="{{ url_for('static', filename='uploads/' + user[7]) }}" alt="Profile Picture">
+    <p><strong>Name:</strong> {{ user[2] }} {{ user[3] }}</p>
+    <p><strong>Username:</strong> {{ user[4] }}</p>
+    <p><strong>Email:</strong> {{ user[5] }}</p>
+    <p><strong>Address:</strong> {{ user[8] }}, {{ user[9] }}, {{ user[10] }} - {{ user[11] }}</p>
+
+    <div class="btn-container">
+      {% if user[1] == 'Doctor' %}
+        <a href="{{ url_for('create_blog') }}" class="btn">Create Blog</a>
+        <a href="{{ url_for('doctor_dashboard') }}" class="btn">Your Blogs</a>
+        <a href="{{ url_for('patient_blogs') }}" class="btn view">View Blogs</a>
+      {% endif %}
+      {% if user[1] == 'Patient' %}
+      <a href="{{ url_for('patient_blogs') }}" class="btn view">View Blogs</a>
+      {% endif %}
+    </div>
+  </div>
+
+</body>
+</html>

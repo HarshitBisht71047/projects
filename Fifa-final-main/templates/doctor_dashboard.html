@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Navigation bar styles */
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #ffdd57;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 30px 0;
+            color: #222;
+        }
+
+        a.button {
+            display: inline-block;
+            margin: 0 auto 40px auto;
+            text-align: center;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        a.button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 0 40px 40px 40px;
+        }
+
+        li {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease;
+        }
+
+        li:hover {
+            transform: translateY(-4px);
+        }
+
+        h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+
+        p {
+            margin: 6px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        p:last-child {
+            font-weight: bold;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h1>Doctor Dashboard</h1>
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}">Profile</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+
+    <h2>Your Blog Posts</h2>
+    <div style="text-align: center;">
+        <a href="{{ url_for('create_blog') }}" class="button">Create New Blog Post</a>
+    </div>
+
+    <ul>
+        {% for blog in blogs %}
+            <li>
+                <h3>{{ blog[2] }}</h3> <!-- blog title -->
+                {% if blog[3] %}
+                    <img src="{{ url_for('static', filename='uploads/' + blog[3]) }}" alt="Blog Image">
+                {% endif %}
+                <p>Category: {{ blog[4] }}</p> <!-- blog category -->
+                <p>Status: {{ 'Draft' if blog[7] else 'Published' }}</p> <!-- blog status -->
+                <p class="blog-content">
+                            {{ blog[6] }}
+                        </p>
+            </li>
+            <form action="{{ url_for('delete_blog', blog_id=blog[0]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this blog?');">
+    <button type="submit" style="
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+    ">Delete</button>
+</form>
+
+        {% endfor %}
+    </ul>
+</body>
+</html>
